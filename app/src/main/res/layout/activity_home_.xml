@@ -23,7 +23,7 @@
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Morphology" />
+        android:text="Edge Detection" />
 
     <Button
         android:id="@+id/button3"
@@ -42,5 +42,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Dilate" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scharr" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Face Detection" />
 
 </LinearLayout>

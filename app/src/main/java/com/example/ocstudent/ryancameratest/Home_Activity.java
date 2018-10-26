@@ -25,6 +25,13 @@ public class Home_Activity extends AppCompatActivity implements View.OnClickList
         button5.setOnClickListener(this);
         Button button6 = findViewById(R.id.button6);
         button6.setOnClickListener(this);
+        Button button7 = findViewById(R.id.button7);
+        button7.setOnClickListener(this);
+        Button button8 = findViewById(R.id.button8);
+        button8.setOnClickListener(this);
+
+        //Need to add each button here
+        //DON'T FORGET
 
     }
 
@@ -49,6 +56,12 @@ public class Home_Activity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.button5:
                 MainActivity.effectNumber = 5;
+                break;
+            case R.id.button7:
+                MainActivity.effectNumber = 6;
+                break;
+            case R.id.button8:
+                MainActivity.effectNumber = 7;
                 break;
         }
         callEffect(MainActivity.effectNumber);

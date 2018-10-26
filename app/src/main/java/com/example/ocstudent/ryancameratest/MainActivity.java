@@ -25,6 +25,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 
 import static org.opencv.core.Core.BORDER_DEFAULT;
 
@@ -49,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
     Mat mRgba;
     Mat mRgbaF;
     Mat mRgbaT;
+
+    /*
+    Mat morphElement;
+    Size morphSize;
+    Point morphPoint;
+    */
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -138,35 +145,52 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
         //Mat alterImage = new Mat();
         Mat baseImage = inputFrame.rgba();
         Mat cameraEffect = baseImage;
-
-        int morphSize = 25;
+        //int morphVal = 10;
         int blurKernel = 35;
         int dilateKernel = 10;
+        double edgeThreshold = 28;
+        /*
+        morphSize = new Size(2*morphVal+1, 2*morphVal+1);
+        morphPoint = new Point(morphVal, morphVal);
+        */
 
         switch(effectNumber) {
-            case 0:
+            case 0: //Default Camera
                 cameraEffect = baseImage;
                 break;
-            case 1:
+            case 1: //Grayscale
                 Imgproc.cvtColor(baseImage, cameraEffect, Imgproc.COLOR_RGB2GRAY);
                 break;
-            case 2:
-                Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_BLACKHAT, new Size(2*morphSize+1, 2*morphSize+1), new Point(morphSize, morphSize));
-                Imgproc.morphologyEx(baseImage, cameraEffect, Imgproc.MORPH_TOPHAT, element);
+            case 2: //Edge Detection
+                Imgproc.cvtColor(baseImage, cameraEffect, Imgproc.COLOR_RGB2GRAY);
+                Imgproc.Canny(cameraEffect, cameraEffect, edgeThreshold, edgeThreshold * 3, 3, false);
                 break;
-                //cameraEffect = alterImage;
-            case 3:
-                Mat invert = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type(), new Scalar(255,255,255));
-                Core.subtract(invert, baseImage, cameraEffect);
+            /*case 2: //Morphology was broken so I'm putting edge detection in its place
+                morphElement = Imgproc.getStructuringElement(Imgproc.MORPH_BLACKHAT, morphSize, morphPoint);
+                Imgproc.morphologyEx(baseImage, cameraEffect, Imgproc.MORPH_BLACKHAT, morphElement);
+                break; */
+            case 3: //Inversion
+                //Mat invert = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type(), new Scalar(255, 255, 255));
+                //Core.subtract(invert, baseImage, cameraEffect);
+                Core.bitwise_not(baseImage, cameraEffect);
+              //invert = null;
                 break;
-                //cameraEffect = alterImage;
-            case 4:
-                Imgproc.medianBlur(mRgba, cameraEffect, blurKernel);
+            case 4: //Median Blur
+                Imgproc.medianBlur(baseImage, cameraEffect, blurKernel);
                 break;
-            case 5:
+            case 5: //Dilation
                 Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2*dilateKernel+1, 2*dilateKernel));
                 Imgproc.dilate(baseImage, cameraEffect, dilateElement);
                 break;
+            case 6: //Scharr
+                Imgproc.Scharr(baseImage, cameraEffect, Imgproc.CV_SCHARR, 0, 1);
+                break;
+            case 7: //Working on face detection
+                Imgproc.cvtColor(baseImage, cameraEffect, Imgproc.COLOR_RGB2GRAY);
+                //Imgproc.equalizeHist(cameraEffect, cameraEffect);
+                //CascadeClassifier();
+                break;
+
         }
 
 
