@@ -200,15 +200,21 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
             faceClassifier.detectMultiScale(grayImage, faces, 1.1, 2, 2, new Size(absoluteFaceSize, absoluteFaceSize), new Size());
         }
 
+        /*
+        if (eyesClassifier != null) {
+            eyesClassifier.detectMultiScale(grayImage, faces, 1.1, 2, 2, new Size(absoluteFaceSize / 5, absoluteFaceSize / 5), new Size());
+        } */
+
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++){
             Imgproc.rectangle(baseImage, facesArray[i].tl(), facesArray[i].br(), new Scalar(0, 255, 255, 255), 3);
         }
 
+        /*
         Rect[] eyesArray = eyes.toArray();
         for (int i = 0; i < eyesArray.length; i++){
             Imgproc.rectangle(baseImage, eyesArray[i].tl(), eyesArray[i].br(), new Scalar(0, 255, 255, 255), 2);
-        }
+        } */
 
 
         return baseImage;
@@ -261,6 +267,10 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
                 break;
             case 7: //Face detection!!!!
                 cameraEffect = faceDetection(baseImage);
+                break;
+            case 8: //Face detection + inversion?
+                cameraEffect = faceDetection(baseImage);
+                Core.bitwise_not(cameraEffect, cameraEffect);
                 break;
 
 

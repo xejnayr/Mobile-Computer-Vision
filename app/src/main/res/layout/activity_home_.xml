@@ -55,4 +55,10 @@
         android:layout_height="wrap_content"
         android:text="Face Detection" />
 
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detect and Invert" />
+
 </LinearLayout>
